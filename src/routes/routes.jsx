@@ -1,9 +1,10 @@
 import { createBrowserRouter } from "react-router-dom";
-import App from "../App";
 import { MovieList } from "../pages/MovieList";
 import { MovieDetail } from "../pages/MovieDetail";
 import { PageNotFound } from "../pages/PageNotFound";
 import { RootLayout } from "../main";
+import { SearchPage } from "../pages/SearchPage";
+import { movieDetailRoute } from "../pages/MovieDetail";
 
 export const router = createBrowserRouter([
   {
@@ -16,25 +17,19 @@ export const router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <App />,
+        element: <MovieList apiPath="movie/now_playing" />,
       },
       {
-        path: "/movies",
-        element: <MovieList />,
-        children: [
-          {
-            path: "popular",
-            element: <MovieList />,
-          },
-          {
-            path: "top",
-            element: <MovieList />,
-          },
-          {
-            path: "upcoming",
-            element: <MovieList />,
-          },
-        ],
+        path: "movies/popular",
+        element: <MovieList apiPath="movie/popular" />,
+      },
+      {
+        path: "movies/top",
+        element: <MovieList apiPath="movie/top_rated" />,
+      },
+      {
+        path: "movies/upcoming",
+        element: <MovieList apiPath="movie/upcoming" />,
       },
       {
         path: "/movie",
@@ -42,8 +37,13 @@ export const router = createBrowserRouter([
           {
             path: ":id",
             element: <MovieDetail />,
+            ...movieDetailRoute,
           },
         ],
+      },
+      {
+        path: "/search",
+        element: <SearchPage apiPath="search/movie" />,
       },
     ],
   },
